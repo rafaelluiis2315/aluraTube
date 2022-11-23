@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import config from "../config.json";
-import { CSSReset } from "../src/components/CssReset";
+import { CssReset } from "../src/components/CssReset";
 import Menu from "../src/components/Menu";
 import { StyledTimeline } from "../src/components/Timeline";
 
@@ -9,7 +9,7 @@ function HomePage() {
 
     return (
         <>
-            <CSSReset/>
+            <CssReset/>
             <div style={{   
                 display: "flex",
                 flexDirection: "column",
