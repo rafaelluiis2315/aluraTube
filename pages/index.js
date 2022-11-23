@@ -4,7 +4,8 @@ import { CSSReset } from "../src/components/CssReset";
 import Menu from "../src/components/Menu";
 import { StyledTimeline } from "../src/components/Timeline";
 
-
+const bg_color = '#000000'
+const text_color = '#FFFFFF'
 function HomePage() {
 
     return (
@@ -15,7 +16,7 @@ function HomePage() {
                 flexDirection: "column",
                 flex: 1,
             }}>
-                <Menu />
+                <Menu bgColor = {bg_color} textColor = {text_color}/>
                 <Header />
                 <Timline playList={config.playLists} />
             </div>
@@ -34,6 +35,7 @@ export default HomePage
 // }
 
 const StyledHeader = styled.div`
+    background-color: ${bg_color};
     img{
         width: 80px;
         height: 80px;
@@ -47,6 +49,9 @@ const StyledHeader = styled.div`
         width: 100%;
         padding: 16px 32px;
         gap: 16px;
+    }
+    h2, p{
+        color: ${text_color} ;
     }
 `
 function Header() {
@@ -73,14 +78,14 @@ function Timline(props) {
 
                 return (
                     <section key={playListName}>
-                        <h2>{playListName}</h2>
+                        <h2 style={{color: text_color}} >{playListName}</h2>
                         <div>
                             {video.map((video) => {
                                 return(
                                     
-                                    <a key={video.title} href={video.url}>
+                                    <a key={video.title} href={video.url} target="_blank">
                                         <img src={video.thumb} />
-                                        <span>
+                                        <span style={{color: text_color}}>
                                             {video.title}
                                         </span>
 

@@ -1,12 +1,27 @@
 import styled from "styled-components";
 
+var bgColor;
+var textColor;
+
+export default function Menu(props) {
+  bgColor = props.bgColor;
+  textColor = props.textColor;
+  return (
+      <StyledMenu>
+          <div>
+              <Logo />
+          </div>
+      </StyledMenu>
+  );
+}
+
 const StyledMenu = styled.header`
   display: flex;
   flex-direction: row;
   height: 56px;
   justify-content: space-between;
-  background-color: ${({ theme }) => theme.backgroundLevel1 || "#FFFFFF"};
-  border: 1px solid ${({ theme }) => theme.borderBase || "#e5e5e5"};
+  background-color: ${({ theme }) => theme.backgroundLevel1 || bgColor};
+  border: 1px solid ${({ theme }) => theme.borderBase || bgColor};
   align-items: center;
   padding: 0 16px;
   gap: 16px;
@@ -19,20 +34,10 @@ const StyledMenu = styled.header`
       max-width: 127px;
     }
     .text {
-      fill: ${({ theme }) => theme.textColorBase || "#222222"};
+      fill: ${({ theme }) => theme.textColorBase || textColor};
     }
   }
 `;
-
-export default function Menu() {
-    return (
-        <StyledMenu>
-            <div>
-                <Logo />
-            </div>
-        </StyledMenu>
-    );
-}
 
 function Logo() {
     return (
