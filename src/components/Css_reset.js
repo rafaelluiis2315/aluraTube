@@ -7,12 +7,14 @@ export const CssReset = createGlobalStyle`
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        scrollbar-color: blue orange;
     }
     
     body {
         font-family: sans-serif;
         background-color: ${({ theme }) => theme.backgroundBase};
         color: ${({ theme }) => theme.textColorBase};
+        overflow-x: hidden;
     }
 
     /* NextJS */
@@ -26,6 +28,7 @@ export const CssReset = createGlobalStyle`
         display: flex;
         flex: 1;
     }
+
 
     #__next {
         display: flex;

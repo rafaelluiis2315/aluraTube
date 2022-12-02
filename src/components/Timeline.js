@@ -24,7 +24,6 @@ export const StyledTimeline = styled.div`
     overflow: hidden;
     padding: 16px;
     div {
-      
       width: calc(100vw - 16px * 4);
       display: grid;
       grid-gap: 16px;
@@ -33,8 +32,31 @@ export const StyledTimeline = styled.div`
       grid-auto-columns: minmax(200px,1fr);
       overflow-x: scroll;
       scroll-snap-type: x mandatory;
+      
+      &::-webkit-scrollbar {
+        width: 20px;           /* width of the entire scrollbar */
+      }
+
+      @media (max-width: 500px){
+        &::-webkit-scrollbar {
+          height: 8px          /* width of the entire scrollbar */
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 10px;
+        }
+      }
+
+      &::-webkit-scrollbar-track {
+        background: ${({ theme }) => theme.backgroundBase || "#222222"};        /* color of the tracking area */
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: ${({ theme }) => theme.borderBase || "#222222"};    /* color of the scroll thumb */
+      }
+
       a {
         scroll-snap-align: start;
+        margin-bottom: 10px;
         span {
           padding-top: 8px;
           display: block;
