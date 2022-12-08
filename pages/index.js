@@ -4,12 +4,31 @@ import config from "../config.json";
 
 import Menu from "../src/components/Menu";
 import { StyledTimeline } from "../src/components/Timeline";
+import { videoService } from "../src/services/videoService";
 
-const valorDoFiltro = "s"
 
 function HomePage() {
-
+    const service = videoService();
     const [valorDoFiltro, setValorDoFiltro] = React.useState("");
+    const [playLists, setPlayLists] = React.useState({});
+    
+    React.useEffect( () => {
+        service.getAllVideos().then((dados) => { 
+
+            const novasPlayLists = { ...playLists };
+            dados.data.forEach((video) => {
+                if (!novasPlayLists[video.playLists.name]) novasPlayLists[video.playLists.name] = [];
+
+                novasPlayLists[video.playLists.name] = [
+                    video.videos,
+                    ...novasPlayLists[video.playLists.name],
+                ];
+
+            })
+
+            setPlayLists(novasPlayLists);
+        });
+    }, []);
 
     return (
         <>
@@ -21,7 +40,7 @@ function HomePage() {
             }}>
                 <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro} />
                 <Header />
-                <Timline searchValue={valorDoFiltro} playList={config.playLists} />
+                <Timline searchValue={valorDoFiltro} playList={playLists} />
             </div>
         </>
     );
