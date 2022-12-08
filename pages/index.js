@@ -1,4 +1,3 @@
-import { createClient } from "@supabase/supabase-js";
 import React from "react";
 import styled from "styled-components";
 import config from "../config.json";
@@ -12,16 +11,17 @@ function HomePage() {
     const service = videoService();
     const [valorDoFiltro, setValorDoFiltro] = React.useState("");
     const [playLists, setPlayLists] = React.useState({});
-
+    
     React.useEffect( () => {
-        service.getAllVideos().then((dados) => {
+        service.getAllVideos().then((dados) => { 
+
             const novasPlayLists = { ...playLists };
             dados.data.forEach((video) => {
-                if (!novasPlayLists["jogo"]) novasPlayLists["jogo"] = [];
+                if (!novasPlayLists[video.playLists.name]) novasPlayLists[video.playLists.name] = [];
 
-                novasPlayLists["jogo"] = [
-                    video,
-                    ...novasPlayLists["jogo"],
+                novasPlayLists[video.playLists.name] = [
+                    video.videos,
+                    ...novasPlayLists[video.playLists.name],
                 ];
 
             })

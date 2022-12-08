@@ -71,7 +71,7 @@ export const StyledRegisterVideo = styled.div`
     }
   }
 
-  input {
+  input, select {
     border-radius: 2px;
     border: 1px solid ${({ theme }) => theme.borderBase};
     padding: 8px 10px;

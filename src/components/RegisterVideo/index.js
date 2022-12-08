@@ -1,5 +1,5 @@
-import { createClient } from "@supabase/supabase-js";
 import React from "react";
+import { videoService } from "../../services/videoService";
 import { StyledRegisterVideo } from "./styles";
 
 function useForm(props) {
@@ -35,15 +35,30 @@ function useForm(props) {
     };
 }
 
-const PROJECT_URL = "https://bfrqqibtuedofcxhdpvo.supabase.co";
-const PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmcnFxaWJ0dWVkb2ZjeGhkcHZvIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzAwMjYzNTUsImV4cCI6MTk4NTYwMjM1NX0.WPmkCWY4hk94WWEqgQW5QvU8OJmae6zrINjA85dl77A";
-
-const supabase = createClient(PROJECT_URL, PUBLIC_KEY)
-
 export default function RegisterVideo() {
-    const formCadastro = useForm({ initalValues: { titulo: "", url: "", thumb: "" } });
+    const formCadastro = useForm({ initalValues: { titulo: "", url: "", thumb: "", playList: ""} });
     const [formVisivel, setFormVisivel] = React.useState(false);
+    const service = videoService();
+    const [playLists, setPlayLists] = React.useState({});
+    const play = {"games": 0, "Front-End": 1, "Back-End": 2}
+    
+    React.useEffect( () => {
+        
+        service.getAllPlayLists().then((dados) => {
 
+            dados.data.forEach((playList) => {
+    
+                if (!playLists[playList.name]){
+
+                    playLists[playList.name] = [
+                        playList.id,
+                    ]
+                }
+            })
+        });
+        
+    }, []);
+    
     return (
         <StyledRegisterVideo>
             <button className="add-video" onClick={() => setFormVisivel(true)}>
@@ -53,21 +68,14 @@ export default function RegisterVideo() {
             {formVisivel
                 ? (
                     <form onSubmit={(e) => {
+                        //tirando ação de reload da pagina
                         e.preventDefault();
-
                         // add objeto video no banco
-                        supabase.from("videos").insert({
-                            title: formCadastro.values.titulo,
-                            url: formCadastro.values.url,
-                            thumb: formCadastro.values.thumb
-                        }) 
-                        .then( (oqueveio) => {
-                            console.log(oqueveio)
-                        }).catch( (err)=>{
-                            console.log(err)
-                        });
-
+                        service.setVideo(formCadastro.values)
+                        // console.log(formCadastro.values)
+                        //fechando modal
                         setFormVisivel(false);
+                        //limpando campos
                         formCadastro.clearForm();
 
                     }}>
@@ -80,7 +88,15 @@ export default function RegisterVideo() {
                             <input type="text" name="url" placeholder="URL" value={formCadastro.values.url} onChange={
                                 formCadastro.handleChange
                             } />
+                            <select  name="playList" placeholder="Selecione uma playList ..." onChange={
+                                formCadastro.handleChange
+                            }>
+                                <option value="default" defaultValue>PlayList...</option>
+                                {Object.keys(playLists).map( (obj) =>{
+                                    return <option value={playLists[obj]} key={playLists[obj]}>{obj}</option>
+                                })}
 
+                            </select>
 
 
                             {formCadastro.values.thumb ? (
